@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset='UTF-8'>
-        <meta name="viewport" content="width=device-width" initial-scale="1.0">
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0">
         <title>Learn&Chill</title>
         <link rel='stylesheet' type='text/css' href='../../stylesheets/main/main.css'>
         <link rel='stylesheet' type='text/css' href='../../stylesheets/pages/_listings.css'>
@@ -10,20 +10,7 @@
     </head>
     
     <body>
-        <header class='banner'>
-            <div class='banner__logo'>
-                <div class='banner__logo-image'>
-                    <img alt="logo" src='../assets/images/logo.png'>
-                </div>
-                <h1 class='banner__companyName'> Learn & Chill </h1>
-            </div>
-            <ul class='banner__userNavigation'>
-                <li><a href='./listings.html'> Find whats happening </a></li>
-                <li><a href='./RSVPed.html'> RSVPed </a></li>
-                <li><a href='./RSVPed.html'> Login </a></li>
-                <li><a href='./RSVPed.html'> Sign Up </a></li>
-            </ul>
-        </header>
+        <%- include('navigation.ejs') %>
 
         <section class='container'>
             <div class='container__splitAside'>
@@ -92,15 +79,6 @@
             </div>
         </section>
 
-        <footer>
-            <div class="copyright">
-                <img alt="copyright" src='../assets/images/copyright.png'><p> Learn & Brew 2020 </p>
-            </div>
-            <div class='links'>
-                <a href='./index.html'> About </a>
-                <a href='./listings.html'> Events </a>
-                <a href='./RSVPed.html'> RSVPed </a>
-            </div>  
-        </footer>
+        <%- include('footer.ejs') %>
     </body>
 </html>
