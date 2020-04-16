@@ -4,29 +4,26 @@
         <meta charset='UTF-8'>
         <meta name="viewport" content="width=device-width, maximum-scale=1.0">
         <title>Learn&Chill</title>
-        <link rel='stylesheet' type='text/css' href='../../stylesheets/main/main.css'>
-        <link rel='stylesheet' type='text/css' href='../../stylesheets/pages/_listings.css'>
-        <script src='../../stylesheets/scripts/styleScript.js' defer></script>
+        <link rel='stylesheet' type='text/css' href='/stylesheets/main/main.css'>
+        <link rel='stylesheet' type='text/css' href='/stylesheets/pages/_listings.css'>
+        <script src='/stylesheets/scripts/styleScript.js' defer></script>
     </head>
     
     <body>
-        <%- include('navigation.ejs') %>
+        <%- include('./partials/navigation.ejs') %>
 
         <section class='container'>
             <div class='container__splitAside'>
                 <div class='container__splitAside_left'>
                     <nav class='rsvp__navigation'> <!-- turn into sidebar-->
-                        <button onclick="window.location.href = './RSVPed.html'"> RSVPed </button>
+                        <button onclick="window.location.href='/auth/RSVPed'"> RSVPed </button>
                         <ul>
-                            <li><a href='./listingDetails.html'> Glass Bottle Pendant Lamps </a>
-                               <h3> Feb 4 </h3>
-                            </li>
-                            <li><a href='./listingDetails.html'> Backyard Brewing with Tim </a>
-                               <h3> Feb 12 </h3>
-                            </li>
-                            <li><a href='./listingDetails.html'> Home Remodeling - Bathroom Tile </a>
-                               <h3> Feb 27 </h3>
-                            </li>
+                            <!-- will be updated once connected to DB with registration status available -->
+                            <% rsvped.forEach(event => { %>
+                                <li><a href='/auth/RSVPed'><%= event.event._name %></a>
+                                    <h3> <%= event.event._date %> </h3>
+                                 </li>
+                           <% }) %>
                         </ul>
                     </nav>
                 </div>
@@ -34,43 +31,35 @@
                     <div class='container__content_1'>
                         <div>
                             <h2>Do it yourself</h2>
-                            <article id='events-DIY'>
-                                <div>
-                                    <h3><a href="./listingDetails.html">Glass Bottle Pendant Lamps</a></h3>
-                                    <p>Feb 4</p>
-                                </div>
-                                <div>
-                                    <h3><a href="./listingDetails.html">Home Remodeling - Bathroom Tile</a></h3>
-                                    <p>Feb 27</p>
-                                </div>
-                                <div>
-                                    <h3><a href="./listingDetails.html">Home Remodeling - Outdoor Patio</a></h3>
-                                    <p>Feb 7</p>
-                                </div>
-                                 <div>
-                                    <h3><a href="./listingDetails.html">Home Remodeling - Bathroom Tile</a></h3>
-                                    <p>Feb 27</p>
-                                </div>
-                                <div>
-                                    <h3><a href="./listingDetails.html">Home Remodeling - Outdoor Patio</a></h3>
-                                    <p>Feb 7</p>
-                                </div>
-                            </article>
+                            <% list.forEach(function(obj){
+                                if(obj._topic === 'DIY') { %>
+                                    <article id='events-${obj.topic}'>
+                                        <div>
+                                            <h3><a href="/public/listingDetails/<%= obj._eventID %>"><%= obj._name %></a></h3>
+                                            <h3><%= obj._details %></h3>
+                                            <p><%= obj._date %></p>
+                                            <p><%= obj._time %></p>
+                                            <p><%= obj._location %></p>
+                                        </div>
+                                    </article> 
+                               <% }
+                            }) %>
+                        </div>
+                        <div>
                             <h2>Foodies</h2>
-                            <article id='events-FOOD'>
-                                <div>
-                                    <h3><a href="./listingDetails.html">Meat and Cheese Party Plates</a></h3>
-                                    <p>Feb 7</p>
-                                </div>
-                                <div>
-                                    <h3><a href="./listingDetails.html">Homemade Blackberry Wine</a></h3>
-                                    <p>Feb 11</p>
-                                </div>
-                                <div>
-                                    <h3><a href="./listingDetails.html">Backyard Brewing with Tim </a></h3>
-                                    <p>Feb 12</p>
-                                </div>
-                            </article> 
+                            <% list.forEach(function(obj){
+                                if(obj._topic === 'Foodies') { %>
+                                    <article id='events-${obj.topic}'>
+                                        <div>
+                                            <h3><a href="/public/listingDetails/<%= obj._eventID %>"><%= obj._name %></a></h3>
+                                            <h3><%= obj._details %></h3>
+                                            <p><%= obj._date %></p>
+                                            <p><%= obj._time %></p>
+                                            <p><%= obj._location %></p>
+                                        </div>
+                                    </article> 
+                               <% }
+                            }) %>
                         </div>
                     </div>
                     <div class='container__content_2'></div>
@@ -79,6 +68,6 @@
             </div>
         </section>
 
-        <%- include('footer.ejs') %>
+        <%- include('./partials/footer.ejs') %>
     </body>
 </html>

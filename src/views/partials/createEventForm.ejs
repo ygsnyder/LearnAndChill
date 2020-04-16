@@ -1,0 +1,27 @@
+<section class='container'>
+    <div class='container__content_1'>
+            <form method="POST" action='/auth/createEvent' enctype="multipart/form-data">
+                <label for='topic'>Topic</label>
+                <select name='topic'>
+                    <option value='diy'>Do It Yourself</option>
+                    <option value='crafts'>Crafts</option>
+                    <option value='food'>Food</option>
+                    <option value='drink'>Drink</option>
+                </select>
+                <label for='eventDescription'>Event Description</label>
+                <textarea name='eventDescription' required></textarea>
+                <label for='maxPersons'>Max Persons</label>
+                <input type='number' name='maxPersons' required>
+                <label for='address'>Event Location</label>
+                <input type='text' name='address' required>
+                <label for='date'>Date</label>
+                <input type='date' name='date' required>
+                <label for='time'>Time</label>
+                <input type='time' name='time'>
+                <label for='eventImage'>Event Image (optional)</label>
+                <input type='file' onchange='previewFile()' name='eventImage'>
+                <img src='' height='200' alt='image preview'>
+                <button type='submit'>Submit</button>
+            </form>
+    </div>
+</section>

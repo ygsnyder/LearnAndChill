@@ -4,54 +4,39 @@
         <meta charset='UTF-8'>
         <meta name="viewport" content="width=device-width, maximum-scale=1.0">
         <title>Learn&Chill</title>
-        <link rel='stylesheet' type='text/css' href='../../stylesheets/main/main.css'>
-        <link rel='stylesheet' type='text/css' href='../../stylesheets/pages/_RSVPed.css'>
-        <script src='../../stylesheets/scripts/styleScript.js' defer></script>
+        <link rel='stylesheet' type='text/css' href='/stylesheets/main/main.css'>
+        <link rel='stylesheet' type='text/css' href='/stylesheets/pages/_RSVPed.css'>
+        <script src='/stylesheets/scripts/styleScript.js' defer></script>
     </head>
     
     <body>
-        <%- include('navigation.ejs') %>
+        <%- include('./partials/navigation.ejs') %>
 
         <section class='container'>
             <div class='container__content_1'>
                         <section id='headers'>
                             <h3>Event</h3>
                             <h3>Date</h3>
-                            <h3>Category</h3>
+                            <h3>Status</h3>
                             <h3></h3>
                         </section>
-                        <section>
-                            <p>Glass Bottle Pendant Lamps</p>
-                            <p>Feb 4</p>
-                            <p>crafting</p>
-                            <div>
-                                <a href="./listings.html">Update</a>
-                                <a href="./RSVPed.html">Delete</a>
-                            </div>
-                        </section>
-                        <section>
-                            <p>Backyard Brewing with Tim</p>
-                            <p>Feb 12</p>
-                            <p>food</p>
-                            <div>
-                                <a href="./listings.html">Update</a>
-                                <a href="./RSVPed.html">Delete</a>
-                            </div>
-                        </section>
-                        <section>
-                            <p>Home Remodeling - Bathroom Tile</p>
-                            <p>Feb 27</p>
-                            <p>DIY</p>
-                            <div>
-                                <a href="./listings.html">Update</a>
-                                <a href="./RSVPed.html">Delete</a>
-                            </div>
-                        </section>
+                        <% eventList.forEach((event)=>{ %>
+                            <section>
+                                <p><%= event.event._name %></p>
+                                <p><%= event.event._date %></p>
+                                <p><%= event.status %></p>
+                                <div>
+                                    <a href="/auth/update/<%= event.event._eventID %>">Update</a>
+                                    <a href="/auth/delete/<%= event.event._eventID %>">Delete</a>
+                                </div>
+                            </section>
+                        <% }) %>
+                        
             </div>
             <div class='container__content_2'></div>
             <div class='container__content_3'></div>
         </section>
 
-        <%- include('footer.ejs') %>
+        <%- include('./partials/footer.ejs') %>
     </body>
 </html>

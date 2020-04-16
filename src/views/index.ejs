@@ -4,19 +4,19 @@
         <meta charset='UTF-8'>
         <meta name="viewport" content="width=device-width, maximum-scale=1.0">
         <title>Learn&Chill</title>
-        <link rel='stylesheet' type='text/css' href='../../stylesheets/main/main.css'>
-        <link rel='stylesheet' type='text/css' href='../../stylesheets/pages/_index.css'>
-        <script src='../../stylesheets/scripts/styleScript.js' defer></script>
+        <link rel='stylesheet' type='text/css' href='/stylesheets/main/main.css'>
+        <link rel='stylesheet' type='text/css' href='/stylesheets/pages/_index.css'>
+        <script src='/stylesheets/scripts/styleScript.js' defer></script>
     </head>
     
     <body>
-        <%- include('navigation.ejs') %>
+        <%- include('./partials/navigation.ejs') %>
 
         <div class="images">
                 <div id="img-1">
-                    <img alt="bees" src="../assets/images/bees.jpg"></div>
+                    <img alt="bees" src="/images/bees.jpg"></div>
                 <div id="img-2">
-                    <img alt="friends" src="../assets/images/friends2.jpg"></div>
+                    <img alt="friends" src="/images/friends2.jpg"></div>
         </div>
 
         
@@ -39,11 +39,11 @@
                 </article>
             </div>
             <div class='container__content_2'>
-                <a href="./listings.html">Discover events near you!</a>
+                <a href="/public/listings">Discover events near you!</a>
             </div>
             <div class='container__content_3'></div>
         </section>
 
-        <%- include('footer.ejs') %>
+        <%- include('./partials/footer.ejs') %>
     </body>
 </html>

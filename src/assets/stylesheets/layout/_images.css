@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.images{
+    padding-top: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+}
+
+.images > #img-1 {
+    align-items: flex-start;
+    display: flex;
+}
+
+.images > #img-2 > img,
+.images > #img-1 > img {
+    flex: 0 1 auto;
+    max-width: 100%;
+    height: auto;
+    box-shadow: 3px 3px 2px black;
+}
