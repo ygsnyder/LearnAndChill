@@ -3,47 +3,103 @@ const app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var path = require('path');
+const shared = require('./controllers/sharedFunctions');
+const mongoose = require('mongoose');
+require('dotenv').config({path: path.resolve(__dirname, '../.env')});
 
-//controllers
+/**
+ * Connect to Mongodb Atlas
+ */
+mongoose.connect(`mongodb+srv://ysnyder1:${process.env.MONGO_PWD}@cluster0-p82up.mongodb.net/LearnAndChill?retryWrites=true&w=majority`, {poolSize: 5});
+
+/**
+ * Connect to Mongodb localhost:3000
+ * 
+ * mongoose.connect('mongodb://localhost/LearnAndChill', {useNewUrlParser: true});
+ */
+
+/**
+ *  Controllers
+ */
 const publicUserActions = require('./controllers/tempUserActions');
 const authUserActions = require('./controllers/authUserActions');
 
-//static assets
+/**
+ * Static Assets
+ */
 app.use(express.static(path.join(__dirname +'/assets')));
 app.use('/util', express.static(path.join(__dirname +'/util')));
 
-//set views
+/**
+ * View Engine 'ejs'
+ */
 app.set('views', path.join(__dirname + '/views'));
 app.set('view engine', 'ejs');
 
-//sessions
-app.use(session({secret: 'myproject', resave: false, saveUninitialized: false, secure: false, cookie: {path:'/'}}));
 
-//bodyParser middleware
+const IN_PROD = process.env.NODE_ENV === 'production'
+const{
+    SESS_NAME = 'sid'
+} = process.env
+/**
+ * Express-sessions
+ */
+app.use(session({
+    name: SESS_NAME,
+    secret: 'myproject', 
+    resave: false, 
+    saveUninitialized: false, 
+    cookie: {
+        maxAge: 1000* 60 * 60 * 2,
+        secure: IN_PROD
+    }
+}));
+
+/**
+ * Body-Parser middleware
+ */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-//default route
-app.use('/', isTemporarySession);
-//will have to implement ejs that reads users req.session.username to identify if they are temp or auth routes
-app.use('/public', publicUserActions);
-app.use('/auth', authUserActions);
 
-app.use('/*', function(req,res){
-    res.render('index');
-});
 
-/**
- * marks user session as temporary
- */
-function isTemporarySession(req, res, next){
-    if(typeof req.session.username == 'undefined'){
-        req.session.username = 'temporary'
-        console.log('new session user is : ' + req.session.username);
+ /**
+  * user auth actions middleware
+  */
+const redirectLogin = (req,res,next)=>{
+    if(req.session.userId){
+        console.log(`loggedin user ${req.session.userId}, continue`)
+        next();
+    } else {
+        req.app.locals.nextAction = req.url;
+        console.log('not logged in to RSVP, redirect to login')
+        res.redirect('/public/login');
     }
-    next('route');
 }
 
-app.listen(3000, ()=>{
-    console.log('listening on port 3000');
+/**
+ *  Routes with methods for all users
+ */
+app.use('/public', publicUserActions);
+
+/**
+ * Routes with methods only for 'logged in' users
+ */
+app.use('/auth', redirectLogin, authUserActions);
+
+/**
+ * Default Route
+ */
+app.use('/*', function(req,res){
+    // req.session.cookiename = SESS_NAME
+    res.render('index', {user: req.session.userId});
+});
+
+
+
+/**
+ * Server Listen
+ */
+app.listen(process.env.PORT, ()=>{
+    console.log(`listening on port ${process.env.PORT}`);
 })

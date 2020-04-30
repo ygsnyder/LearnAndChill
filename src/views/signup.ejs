@@ -13,9 +13,9 @@
         <%- include('./partials/navigation.ejs') %>
 
         <section class='container'>
+            <h3>Sign-up</h3>
             <div class='container__content_1'>
-                <h3>Login</h3>
-                    <form method='POST' action='/public/login'> 
+                    <form method='POST' action='/public/signup'> 
                         <label for='username'>Username:</label>
                         <input type='text' name='username'>
                         <label for='alias'>Alias</label>
@@ -23,7 +23,7 @@
                         <label for='password'>Password:</label>
                         <input type='text' name='password'>
                         
-                        <button type='submit'>Login</button>
+                        <button type='submit'>Signup</button>
                     </form>
             </div>
             <div>
@@ -31,11 +31,6 @@
                     <br>
                     <h3><%= message %></h3>
                 <% } %>
-            </div>
-            <div class='container__content_2'>
-                <h4>No Account? <a href='/public/signup'>Sign-up</a></h4>
-                
-
             </div>
         </section>
 

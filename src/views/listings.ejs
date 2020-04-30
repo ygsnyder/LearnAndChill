@@ -17,50 +17,80 @@
                 <div class='container__splitAside_left'>
                     <nav class='rsvp__navigation'> <!-- turn into sidebar-->
                         <button onclick="window.location.href='/auth/RSVPed'"> RSVPed </button>
-                        <ul>
-                            <!-- will be updated once connected to DB with registration status available -->
-                            <% rsvped.forEach(event => { %>
-                                <li><a href='/auth/RSVPed'><%= event.event._name %></a>
-                                    <h3> <%= event.event._date %> </h3>
-                                 </li>
-                           <% }) %>
-                        </ul>
                     </nav>
                 </div>
                 <div class='container__splitAside_right'>
                     <div class='container__content_1'>
+                        <% if (list) { %>
                         <div>
                             <h2>Do it yourself</h2>
                             <% list.forEach(function(obj){
-                                if(obj._topic === 'DIY') { %>
+                                if(obj.topic === 'diy') { %>
                                     <article id='events-${obj.topic}'>
                                         <div>
-                                            <h3><a href="/public/listingDetails/<%= obj._eventID %>"><%= obj._name %></a></h3>
-                                            <h3><%= obj._details %></h3>
-                                            <p><%= obj._date %></p>
-                                            <p><%= obj._time %></p>
-                                            <p><%= obj._location %></p>
+                                            <h3><a href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
+                                            <h3><%= obj.eventDescription %></h3>
+                                            <p><%= new Date(obj.date).toDateString() %></p>
+                                            <p><%= obj.time %></p>
+                                            <p><%= obj.address %></p>
+                                            <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
                                         </div>
                                     </article> 
                                <% }
                             }) %>
                         </div>
                         <div>
-                            <h2>Foodies</h2>
+                            <h2>Food</h2>
                             <% list.forEach(function(obj){
-                                if(obj._topic === 'Foodies') { %>
+                                if(obj.topic === 'food') { %>
                                     <article id='events-${obj.topic}'>
                                         <div>
-                                            <h3><a href="/public/listingDetails/<%= obj._eventID %>"><%= obj._name %></a></h3>
-                                            <h3><%= obj._details %></h3>
-                                            <p><%= obj._date %></p>
-                                            <p><%= obj._time %></p>
-                                            <p><%= obj._location %></p>
+                                            <h3><a href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
+                                            <h3><%= obj.eventDescription %></h3>
+                                            <p><%= new Date(obj.date).toDateString() %></p>
+                                            <p><%= obj.time %></p>
+                                            <p><%= obj.address %></p>
+                                            <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
                                         </div>
                                     </article> 
                                <% }
                             }) %>
                         </div>
+                        <div>
+                            <h2>Drink</h2>
+                            <% list.forEach(function(obj){
+                                if(obj.topic === 'drink') { %>
+                                    <article id='events-${obj.topic}'>
+                                        <div>
+                                            <h3><a href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
+                                            <h3><%= obj.eventDescription %></h3>
+                                            <p><%= new Date(obj.date).toDateString() %></p>
+                                            <p><%= obj.time %></p>
+                                            <p><%= obj.address %></p>
+                                            <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
+                                        </div>
+                                    </article> 
+                               <% }
+                            }) %>
+                        </div>
+                        <div>
+                            <h2>Crafts</h2>
+                            <% list.forEach(function(obj){
+                                if(obj.topic === 'crafts') { %>
+                                    <article id='events-${obj.topic}'>
+                                        <div>
+                                            <h3><a href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
+                                            <h3><%= obj.eventDescription %></h3>
+                                            <p><%= new Date(obj.date).toDateString() %></p>
+                                            <p><%= obj.time %></p>
+                                            <p><%= obj.address %></p>
+                                            <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
+                                        </div>
+                                    </article> 
+                               <% }
+                            }) %>
+                        </div>
+                        <% } %>
                     </div>
                     <div class='container__content_2'></div>
                     <div class='container__content_3'></div>

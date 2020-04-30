@@ -9,6 +9,13 @@
         <li><a href='/public/listings'> Find whats happening </a></li>
         <li><a href='/auth/RSVPed'> RSVPed </a></li>
         <li><a href='/auth/createEvent'> Create Event </a></li>
-        <li><a href='/public/login'> Login </a></li>
+        
+        <% if(!user){ %>
+            <li><a href='/public/login'> Login </a></li>
+            <li><a href='/public/signup'> Sign-up </a></li>
+        <% } else { %>
+            <li><a href='/public/logout'> Logout </a></li>
+        <% } %>
+        
     </ul>
 </header>

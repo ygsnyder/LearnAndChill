@@ -20,17 +20,23 @@
                             <h3>Status</h3>
                             <h3></h3>
                         </section>
-                        <% eventList.forEach((event)=>{ %>
-                            <section>
-                                <p><%= event.event._name %></p>
-                                <p><%= event.event._date %></p>
-                                <p><%= event.status %></p>
-                                <div>
-                                    <a href="/auth/update/<%= event.event._eventID %>">Update</a>
-                                    <a href="/auth/delete/<%= event.event._eventID %>">Delete</a>
-                                </div>
-                            </section>
-                        <% }) %>
+                        <% if (eventList){ %>
+                        
+                            <% for(let i = 0; i< eventList.length; i++){ %>
+
+
+                                <section>
+                                    <p><%= eventList[i].title %></p>
+                                    <p><%= new Date(eventList[i].date).toDateString() %></p>
+                                    <p><%= eventList[i].status %></p>
+                                    <div>
+                                        <a href="/auth/update/<%= eventList[i]._id %>">Update</a>
+                                        <a href="/auth/delete/<%= eventList[i]._id %>">Delete</a>
+                                    </div>
+                                </section>
+
+                          <%  } %>
+                        <% } %>
                         
             </div>
             <div class='container__content_2'></div>

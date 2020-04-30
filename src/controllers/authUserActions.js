@@ -1,8 +1,29 @@
-/* Handles requests for single events and a list of events */
-const db = require('../util/eventDB');
+/**
+ * authUserActions.js preforms actions that only a "logged in" user can execute
+ */
+
+ /**
+ * Express-Validator
+ */
+const {check, body, query, checkSchema, param, validationResult } = require('express-validator')
+
+const fs = require('fs');
+const path = require('path');
 const shared = require('./sharedFunctions');
-const express = require('express')
+const express = require('express');
+const mongoose = require('mongoose');
+const db = mongoose.connection;
 const router = express.Router();
+
+/**
+ * Learn and Chill Event Model
+ */
+const LCEvent = require('../models/eventModel');
+const UserModel = require('../models/userModel');
+
+/**
+ * Multer handles the req.files (images) for newly created events
+ */
 const multer = require('multer');
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -12,118 +33,209 @@ var storage = multer.diskStorage({
         cb(null , file.originalname);
     }
 });
-const upload = multer({storage: storage});
+
+/**
+ * Accepts only jpeg and png files
+ */
+const fileFilter = (req, file, cb) => {
+    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+        cb(null, true);
+    }
+    else {
+        cb(null, false);
+    }
+}
+
+/**
+ * Multer instance with our configurations to handle and store multipart/form-data
+ */
+const upload = multer({
+    storage: storage, 
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
+
+const redirectLogin = (req,res,next)=>{
+    if(!req.session.userId){
+        req.app.locals.nextAction = req.url
+        console.log(req.app.locals.nextAction)
+        res.redirect('/public/login')
+    } else {
+        next()
+    }
+}
 
 /**
  * Redirects if user is not validated (signed in)
  * Renders the createEvent page
  */
-router.get('/createEvent', [shared.validateSession], function(req,res){
-    res.render('createEvent');
+router.get('/createEvent', redirectLogin, function(req,res){
+    res.render('createEvent', {user: req.session.userId});
 })
 
 /**
  * Redirects if user is not validated (signed in) - prevents unauthorized url posts
  * Saves the new event, with the user info attached, to the database
  */
-router.post('/createEvent', upload.single('eventImage') , function(req,res){ //[shared.validateSession] add back in
-    console.log(req.file);
-    res.send('received new event');
-})
+router.post('/createEvent', redirectLogin,
+        upload.single('eventImage'),
+        check('topic').notEmpty().isString().trim().escape(),
+        check('title').notEmpty().isString().trim().escape(),
+        check('eventDescription').not().isEmpty().isString(),
+        check('maxPersons').not().isEmpty().isNumeric(),
+        check('address').notEmpty().isString().trim().escape(),
+        check('date').not().isEmpty().isString(),
+        check('time').not().isEmpty().isString(),
+    
+    function(req,res){ 
 
-/**
- * Redirects if user is not validated (signed in)
- * Add new event to RSVP with status of 'going'
- * If the event is already RSVPed, update the events status to 'going'
- */
-router.get('/post/going', [shared.validateSession, shared.retrieveEventList], function(req,res){
-    let found = req.session.eventList.find(event => event.event._eventID == req.session.currentEvent._eventID);
-    if(found){
-        found.status = 'going';
-    }
-    else{
-        req.session.eventList.push({
-            event: req.session.currentEvent,
-            status: 'going'
+        if(!validationResult(req).isEmpty()){
+            console.log(validationResult(req))
+           return res.sendStatus(400).json({error: validationResult(req)})
+        } else{
+        //sets image as default if not image is uploaded
+        const defaultImagePath = path.resolve(__dirname, '../assets/images/logo.png');
+        if (req.file === undefined){
+            eventImage = {
+                file: defaultImagePath,
+                filename: 'defaultImage.jpg',
+                mimetype: 'image/jpeg'
+            }
+        } else {
+            eventImage = {
+                file: fs.readFileSync(req.file.path),
+                filename: req.file.filename,
+                mimetype: req.file.mimetype
+            }
+        }
+        //create the new event
+        const { topic, title, eventDescription, maxPersons, address, date, time} = req.body
+        new LCEvent({
+            _id: new mongoose.Types.ObjectId(),
+            status: 'going',
+            creator: req.session.userId,
+            topic: topic,
+            title: title,
+            eventDescription: eventDescription,
+            maxPersons: maxPersons,
+            address: address,
+            date: new Date(date).toDateString(),
+            time: time.toString(),
+            eventImage: eventImage
         })
+        //save to collection 'events' in LearnAndChill database
+            .save()
+            .then( async event => {
+                const result = await UserModel.findByIdAndUpdate({_id: req.session.userId}, {$push: {eventList : event}})
+                return res.redirect(`/public/listingDetails/${event._id}`)
+            })
+            .catch( error => {
+                console.log(error)
+                return res.redirect('/auth/createEvent')
+            }); 
+        }
     }
-    res.redirect('/auth/RSVPed');
-})
+)
 
-/**
- * Add new event to RSVP with status of 'interested'
- * If the event is already RSVPed, update the events status to 'interested'
- */
-router.get('/post/interested', [shared.validateSession, shared.retrieveEventList], function(req,res){
-    let found = req.session.eventList.find(event => event.event._eventID == req.session.currentEvent._eventID);
-    if(found){
-        found.status = 'interested';
-    }
-    else{
-        req.session.eventList.push({
-            event: req.session.currentEvent,
-            status: 'interested'
-        })
-    }
-    res.redirect('/auth/RSVPed');
-})
 
 /**
  * Add new event to RSVP with status of 'notgoing'
  * If the event is already RSVPed, update the events status to 'notgoing'
  */
-router.get('/post/notgoing', [shared.validateSession, shared.retrieveEventList], function(req,res){
-    let found = req.session.eventList.find(event => event.event._eventID == req.session.currentEvent._eventID);
-    if(found){
-        found.status = 'notgoing';
+router.get('/post/:status/:id', redirectLogin, async function(req,res){
+    console.log('updating rsvped status');
+    if(!validationResult(req).isEmpty()){
+        console.log('errors found')
+    } 
+    
+    var exist;
+    try {
+         exist = await UserModel.count(
+            {
+                _id: mongoose.Types.ObjectId(req.session.userId),
+                "eventList._id": req.params.id
+            },
+                function(err,count){
+                    if(err) return err;
+                    if(count > 0){
+                        return true;
+                    }else {
+                        return false;
+                    }
+                }
+        )
+    }catch (err){
+        console.log(err)
+        exists = false;
     }
-    else{
-        req.session.eventList.push({
-            event: req.session.currentEvent,
-            status: 'notgoing'
-        })
+    
+    if(!exist){
+        try{
+            var doc = await LCEvent.findById({_id: mongoose.Types.ObjectId(req.params.id)},
+                function(err,doc){
+                    if(err) return err;
+                    return doc;
+
+                })
+            UserModel.update({
+                _id: mongoose.Types.ObjectId(req.session.userId)
+            },
+            {
+                $push: { "eventList": doc}
+            },
+            function(err, doc){
+                if(err) console.log(err);
+                console.log(doc)
+                return res.redirect('/auth/RSVPed');
+            })
+        }catch(err){
+            console.log(err);
+        }
+        
+    } else {
+        UserModel.update(
+            {
+                _id: mongoose.Types.ObjectId(req.session.userId),
+                "eventList._id": req.params.id
+            },
+            {
+                $set: { "eventList.$.status": req.params.status }
+            },
+            function(err, doc){
+                if(err) console.log(err);
+                console.log(doc)
+                return res.redirect('/auth/RSVPed');
+            })  
     }
-    res.redirect('/auth/RSVPed');
 })
 
 /**
  * Updates an event by id 
  */
-router.get('/update/:_eventID', function(req,res){
-    if(req.session.eventList){
-        req.session.eventList.forEach(function(event){
-            if(event.event._eventID == req.params._eventID){
-                res.redirect(`/public/listingDetails/${req.params._eventID}`);
-            }
-            
-        });
-        console.log("REQ PARAMS: ", req.params._eventID);
-        console.log("ALL PARAMS: ", req.params);
-    }
-    else{
-        console.log('invalid action for route: ' + req.url);
-        res.render('index');
-    }
+router.get('/update/:id', redirectLogin, function(req,res){
+    console.log('redirecting')
+    res.redirect(`/public/listingDetails/${req.params.id}`)
 })
 
 /**
  * Deletes an event by id
  */
-router.get('/delete/:_eventID', function(req,res){
-    var index = 0;
-    if(req.session.eventList){
-        req.session.eventList.forEach(function(event){
-            if(event.event._eventID == req.params._eventID){
-                req.session.eventList.splice(index, 1);
-            }
-            index++;
-        });
-        res.redirect('/auth/RSVPed')
-    }
-    else{
-        console.log('invalid action for route: ' + req.url);
-        res.render('index');
-    }
+router.get('/delete/:id', redirectLogin, function(req,res){
+    UserModel.update(
+        {_id: req.session.userId}, 
+        {
+            $pull: {"eventList": {_id : req.params.id}}
+        }, 
+        function(err, doc){
+            if(err){
+                console.log(err);
+            } 
+            console.log(doc)
+            return res.redirect('/auth/RSVPed')
+        }
+    )
     
 })
 
@@ -132,8 +244,14 @@ router.get('/delete/:_eventID', function(req,res){
  * Checks current user session ? continue : redirects to /login
  * Retrieves users RSVPed events
  */
-router.get('/RSVPed', [shared.validateSession, shared.retrieveEventList], function(req,res){
-    res.render('RSVPed.ejs',{eventList: req.session.eventList});
+router.get('/RSVPed', redirectLogin, function(req,res){
+    UserModel.findOne({_id : req.session.userId})
+    .exec()
+    .then((user)=>{
+        if(user){
+            res.render('RSVPed.ejs', {user : req.session.userId, eventList : user.eventList})
+        }
+    })
 })
 
 module.exports = router;

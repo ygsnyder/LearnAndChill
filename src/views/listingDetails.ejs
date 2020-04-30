@@ -17,33 +17,25 @@
             <div class='container__content_1'>
                     <article id='details'>
                         <div id='details__description'>
-                            <h3><%= event._name %></h3>
-                            <p><%= event._details %></p>
+                            <% console.log(event) %>
+                            <h3><%= event.title %></h3>
+                            <p><%= event.eventDescription %></p>
                         </div>
                         <div id='details__additionalInfo'> 
-                            <div><h3> Acommodates </h3><p>5 people</p></div>
-                            <div><h3> Address </h3><p><%= event._location %></p></div>
-                            <div><h3> Date & Time</h3><p><%= event._date %></p><p><%= event._time %></p></div>
+                            <div><h3> Acommodates </h3><p><%= event.maxPersons %> people</p></div>
+                            <div><h3> Address </h3><p><%= event.address %></p></div>
+                            <div><h3> Date & Time</h3><p><%= new Date(event.date).toDateString() %></p><p><%= event.time %></p></div>
                         </div>
                     </article>
             </div>
             <div class='container__content_2'>
-                <a id='button_going' href='/auth/post/going'>Going</a>
-                <a id='button_interested' href='/auth/post/interested'>Interested</a>
-                <a id='button_notGoing' href='/auth/post/notgoing'>Not Going</a>
+                <a id='button_going' href=<%=`/auth/post/going/${event._id}`%>>Going</a>
+                <a id='button_interested' href=<%=`/auth/post/interested/${event._id}`%>>Interested</a>
+                <a id='button_notGoing' href=<%=`/auth/post/notgoing/${event._id}`%>>Not Going</a>
             </div>
             <div class='container__content_3'>
                 <div class='container__content_3_image'>
-                    <img alt="wine lamps" src=<%= `/images/${event._image}` %>>
-                    <img alt="wine lamps" src=<%= `/images/${event._image}` %>>
-                    <img alt="wine lamps" src=<%= `/images/${event._image}` %>>
-                    <img alt="wine lamps" src=<%= `/images/${event._image}` %>>
-                    <img alt="wine lamps" src=<%= `/images/${event._image}` %>>
-                    <img alt="wine lamps" src=<%= `/images/${event._image}` %>>
-                    <img alt="wine lamps" src=<%= `/images/${event._image}` %>>
-                    <img alt="wine lamps" src=<%= `/images/${event._image}` %>>
-                    <img alt="wine lamps" src=<%= `/images/${event._image}` %>>
-                    <img alt="wine lamps" src=<%= `/images/${event._image}` %>>
+                   <img src='http://localhost:3000/public/images/<%= event._id %>' >
                 </div>                
             </div>
         </section>
