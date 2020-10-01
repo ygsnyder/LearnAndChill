@@ -1,0 +1,31 @@
+{
+  "name": "learnandchill",
+  "version": "1.0.0",
+  "description": "Events and Learning app",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "express-validator": "^6.4.0",
+    "mongoose": "^5.9.9",
+    "multer": "^1.4.2",
+    "node": "^13.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ygsnyder/LearnAndChill.git"
+  },
+  "author": "Yates Snyder",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ygsnyder/LearnAndChill/issues"
+  },
+  "homepage": "https://github.com/ygsnyder/LearnAndChill#readme"
+}
