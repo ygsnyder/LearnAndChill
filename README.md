@@ -2,6 +2,9 @@
 Community hangout and skillshare website.
 Built with HTML, CSS, JavaScript, Node, Express, & MongoDB Atlas
 
+![](./src/assets/images/samplePhoto.png)
+![](./src/assets/images/samplePhoto2.png)
+
 # What it Does
 * Create a persistant username and password
 * RSVP to events
