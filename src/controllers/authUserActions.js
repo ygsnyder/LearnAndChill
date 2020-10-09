@@ -99,9 +99,9 @@ router.post('/createEvent', redirectLogin,
         const defaultImagePath = path.resolve(__dirname, '../assets/images/logo.png');
         if (req.file === undefined){
             eventImage = {
-                file: defaultImagePath,
-                filename: 'defaultImage.jpg',
-                mimetype: 'image/jpeg'
+                file: fs.readFileSync(defaultImagePath),
+                filename: 'logo.png',
+                mimetype: 'image/png'
             }
         } else {
             eventImage = {
@@ -132,7 +132,6 @@ router.post('/createEvent', redirectLogin,
                 return res.redirect(`/public/listingDetails/${event._id}`)
             })
             .catch( error => {
-                console.log(error)
                 return res.redirect('/auth/createEvent')
             }); 
         }
@@ -171,7 +170,7 @@ router.get('/post/:status/:id', redirectLogin, async function(req,res){
         exists = false;
     }
     
-    if(!exist){
+    if(!exist){ //Add new event to the users eventList in their profile
         try{
             var doc = await LCEvent.findById({_id: mongoose.Types.ObjectId(req.params.id)},
                 function(err,doc){
@@ -187,14 +186,25 @@ router.get('/post/:status/:id', redirectLogin, async function(req,res){
             },
             function(err, doc){
                 if(err) console.log(err);
-                console.log(doc)
-                return res.redirect('/auth/RSVPed');
+
+                UserModel.update(
+                    {
+                        _id: mongoose.Types.ObjectId(req.session.userId),
+                        "eventList._id": req.params.id
+                    },
+                    {
+                        $set: { "eventList.$.status": req.params.status }
+                    },
+                    function(err, doc){
+                        if(err) console.log(err);
+                        return res.redirect('/auth/RSVPed');
+                    })  
             })
         }catch(err){
             console.log(err);
         }
         
-    } else {
+    } else { //Update the existing entry in their user profile
         UserModel.update(
             {
                 _id: mongoose.Types.ObjectId(req.session.userId),
@@ -205,7 +215,6 @@ router.get('/post/:status/:id', redirectLogin, async function(req,res){
             },
             function(err, doc){
                 if(err) console.log(err);
-                console.log(doc)
                 return res.redirect('/auth/RSVPed');
             })  
     }
@@ -215,7 +224,6 @@ router.get('/post/:status/:id', redirectLogin, async function(req,res){
  * Updates an event by id 
  */
 router.get('/update/:id', redirectLogin, function(req,res){
-    console.log('redirecting')
     res.redirect(`/public/listingDetails/${req.params.id}`)
 })
 
@@ -232,7 +240,6 @@ router.get('/delete/:id', redirectLogin, function(req,res){
             if(err){
                 console.log(err);
             } 
-            console.log(doc)
             return res.redirect('/auth/RSVPed')
         }
     )

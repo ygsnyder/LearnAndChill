@@ -1,45 +1,66 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset='UTF-8'>
-        <meta name="viewport" content="width=device-width, maximum-scale=1.0">
-        <title>Learn&Chill</title>
-        <link rel='stylesheet' type='text/css' href='/stylesheets/main/main.css'>
-        <link rel='stylesheet' type='text/css' href='/stylesheets/pages/_listingDetails.css'>
-        <script src='/stylesheets/scripts/styleScript.js' defer></script>
-    </head>
-    
-    <body>
-        <%- include('./partials/navigation.ejs') %>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+    <title>Learn&Chill</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type='text/css' href="/stylesheets/styles.css">
+    <script src='/stylesheets/scripts/styleScript.js' defer></script>
+</head>
+
+<body>
+    <%- include('./partials/navigation.ejs') %>
 
 
-        <section class='container'>
-            <div class='container__content_1'>
-                    <article id='details'>
-                        <div id='details__description'>
-                            <% console.log(event) %>
-                            <h3><%= event.title %></h3>
-                            <p><%= event.eventDescription %></p>
-                        </div>
-                        <div id='details__additionalInfo'> 
-                            <div><h3> Acommodates </h3><p><%= event.maxPersons %> people</p></div>
-                            <div><h3> Address </h3><p><%= event.address %></p></div>
-                            <div><h3> Date & Time</h3><p><%= new Date(event.date).toDateString() %></p><p><%= event.time %></p></div>
-                        </div>
-                    </article>
-            </div>
-            <div class='container__content_2'>
-                <a id='button_going' href=<%=`/auth/post/going/${event._id}`%>>Going</a>
-                <a id='button_interested' href=<%=`/auth/post/interested/${event._id}`%>>Interested</a>
-                <a id='button_notGoing' href=<%=`/auth/post/notgoing/${event._id}`%>>Not Going</a>
-            </div>
-            <div class='container__content_3'>
-                <div class='container__content_3_image'>
-                   <img src='http://localhost:3000/public/images/<%= event._id %>' >
-                </div>                
-            </div>
-        </section>
+    <section class='container-fluid shortPage'>
+        <div class='row m-4'>
+            <article class='col-md-6'>
+                <div class='mt-2'>
+                    <h4><%= event.title %></h4>
+                    <p><%= event.eventDescription %></p>
+                </div>
 
-        <%- include('./partials/footer.ejs') %>
-    </body>
+                <div class='mt-4'>
+                    <h5> Acommodates </h5>
+                    <p><%= event.maxPersons %> people</p>
+                </div>
+                <div class='mt-4'>
+                    <h5> Address </h5>
+                    <p><%= event.address %></p>
+                </div>
+                <div class='mt-4'>
+                    <h5> Date & Time</h5>
+                    <p><%= new Date(event.date).toDateString() %></p>
+                    <p><%= event.time %></p>
+                </div>
+
+            </article>
+            <div class='col-md-6'>
+                <img class='img-fluid rounded' max-width=100% height=auto
+                    src='http://localhost:3000/public/images/<%= event._id %>'>
+            </div>
+        </div>
+        <div class='row m-4 justify-content-start align-center'>
+            <a class='col-md-1 m-1 btn btn-primary' href=<%=`/auth/post/going/${event._id}`%>>Going</a>
+            <a class='col-md-1 m-1 btn btn-info' href=<%=`/auth/post/interested/${event._id}`%>>Interested</a>
+            <a class='col-md-1 m-1 btn btn-secondary' href=<%=`/auth/post/notgoing/${event._id}`%>>Not Going</a>
+        </div>
+
+    </section>
+    <%- include('./partials/footer.ejs') %>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+</body>
+
 </html>

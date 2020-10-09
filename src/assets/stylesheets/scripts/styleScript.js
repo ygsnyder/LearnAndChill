@@ -1,9 +1,13 @@
-var aboutOverlay = document.getElementsByClassName('banner__logo')[0];
-aboutOverlay.addEventListener('click', function (event) {
-    location.href = "/";
-  });
 
 
-var minimumHeight = document.getElementsByTagName('html')[0].offsetHeight;
-console.log(minimumHeight);
-document.getElementsByTagName('body')[0].setAttribute('style', 'min-height: ${minimumHeight}');
+  var icon = document.getElementsByClassName('navbar-brand')[0];
+  icon.onclick = ()=>{
+    console.log('clicked');
+    location.href='/'
+  };
+
+  function renderImg(){
+    var x = document.getElementById("createEventImg");
+    x.style.display = "block";
+    console.log(x.style);
+  }

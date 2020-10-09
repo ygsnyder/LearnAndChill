@@ -70,6 +70,7 @@ router.post('/signup', redirectIndex,
     check('alias').notEmpty().bail().isString().trim().escape(), 
     async function(req,res){
         if(!validationResult(req).isEmpty()){
+            console.log(validationResult(req));
             return res.render('signup.ejs',  {user: req.session.userId, message: "Password must contain: 6-10 characters, at least 2 decimals, at least 1 uppercase letter, at least 1 special character"})
         }
         const {username, password, alias} = req.body

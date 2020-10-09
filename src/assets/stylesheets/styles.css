@@ -1,0 +1,23 @@
+
+h1, .align-center {
+    text-align: center;
+}
+h3, #footer-logo{
+    color: white;
+}
+
+.navbar-brand:hover{
+    cursor: pointer;
+}
+
+p {
+    margin: 1px;
+}
+
+.shortPage {
+    min-height: 76vh;
+}
+
+.shortPage-80{
+    min-height: 80vh;
+}

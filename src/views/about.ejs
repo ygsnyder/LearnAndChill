@@ -4,25 +4,29 @@
         <meta charset='UTF-8'>
         <meta name="viewport" content="width=device-width, maximum-scale=1.0">
         <title>Learn&Chill</title>
-        <link rel='stylesheet' type='text/css' href='/stylesheets/main/main.css'>
-        <link rel='stylesheet' type='text/css' href='/stylesheets/pages/_about.css'>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" type='text/css' href="/stylesheets/styles.css">
         <script src='/stylesheets/scripts/styleScript.js' defer></script>
     </head>
     
     <body>
         <%- include('./partials/navigation.ejs') %>
 
-
-        <section class='container'>
-            <div class='container__content_1'>
+        <section class='container shortPage-80'>
+            <div class='row mb-auto pt-5 align-items-center'>
+                <div class='col'>
                     <p>Meet our founder - Yates</p>
                     <p>He's known by many as a hobbiest, and has always enjoyed learning new skills. This brought about Learn and Chill 
                         as a platform for talented individuals to share their expertise and form friendships. Learn and Chill offers 1000+ events
                         every week with a plethora of personalities teaching artistic design to backyard bbq.
                     </p>
+                </div>
             </div>
         </section>
 
         <%- include('./partials/footer.ejs') %>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     </body>
 </html>

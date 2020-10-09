@@ -14,9 +14,8 @@ mongoose.connect(`mongodb+srv://ysnyder1:${process.env.MONGO_PWD}@cluster0-p82up
 
 /**
  * Connect to Mongodb localhost:3000
- * 
- * mongoose.connect('mongodb://localhost/LearnAndChill', {useNewUrlParser: true});
  */
+// mongoose.connect('mongodb://localhost/LearnAndChill', {useNewUrlParser: true});
 
 /**
  *  Controllers
@@ -68,11 +67,9 @@ app.use(bodyParser.urlencoded({extended: true}));
   */
 const redirectLogin = (req,res,next)=>{
     if(req.session.userId){
-        console.log(`loggedin user ${req.session.userId}, continue`)
         next();
     } else {
         req.app.locals.nextAction = req.url;
-        console.log('not logged in to RSVP, redirect to login')
         res.redirect('/public/login');
     }
 }

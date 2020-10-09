@@ -1,103 +1,106 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset='UTF-8'>
-        <meta name="viewport" content="width=device-width, maximum-scale=1.0">
-        <title>Learn&Chill</title>
-        <link rel='stylesheet' type='text/css' href='/stylesheets/main/main.css'>
-        <link rel='stylesheet' type='text/css' href='/stylesheets/pages/_listings.css'>
-        <script src='/stylesheets/scripts/styleScript.js' defer></script>
-    </head>
-    
-    <body>
-        <%- include('./partials/navigation.ejs') %>
 
-        <section class='container'>
-            <div class='container__splitAside'>
-                <div class='container__splitAside_left'>
-                    <nav class='rsvp__navigation'> <!-- turn into sidebar-->
-                        <button onclick="window.location.href='/auth/RSVPed'"> RSVPed </button>
-                    </nav>
-                </div>
-                <div class='container__splitAside_right'>
-                    <div class='container__content_1'>
-                        <% if (list) { %>
-                        <div>
-                            <h2>Do it yourself</h2>
-                            <% list.forEach(function(obj){
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+    <title>Learn&Chill</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type='text/css' href="/stylesheets/styles.css">
+    <script src='/stylesheets/scripts/styleScript.js' defer></script>
+</head>
+
+<body>
+    <%- include('./partials/navigation.ejs') %>
+
+    <div class='container'>
+        <div class='row bg-light mt-4 justify-content-around'>
+            <% if (list) { %>
+            <div class='col-md-3'>
+                <h1 class='mb-5'>Do it yourself</h2>
+                
+                <% list.forEach(function(obj){
                                 if(obj.topic === 'diy') { %>
-                                    <article id='events-${obj.topic}'>
-                                        <div>
-                                            <h3><a href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
-                                            <h3><%= obj.eventDescription %></h3>
-                                            <p><%= new Date(obj.date).toDateString() %></p>
-                                            <p><%= obj.time %></p>
-                                            <p><%= obj.address %></p>
-                                            <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
-                                        </div>
-                                    </article> 
-                               <% }
-                            }) %>
-                        </div>
-                        <div>
-                            <h2>Food</h2>
-                            <% list.forEach(function(obj){
-                                if(obj.topic === 'food') { %>
-                                    <article id='events-${obj.topic}'>
-                                        <div>
-                                            <h3><a href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
-                                            <h3><%= obj.eventDescription %></h3>
-                                            <p><%= new Date(obj.date).toDateString() %></p>
-                                            <p><%= obj.time %></p>
-                                            <p><%= obj.address %></p>
-                                            <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
-                                        </div>
-                                    </article> 
-                               <% }
-                            }) %>
-                        </div>
-                        <div>
-                            <h2>Drink</h2>
-                            <% list.forEach(function(obj){
-                                if(obj.topic === 'drink') { %>
-                                    <article id='events-${obj.topic}'>
-                                        <div>
-                                            <h3><a href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
-                                            <h3><%= obj.eventDescription %></h3>
-                                            <p><%= new Date(obj.date).toDateString() %></p>
-                                            <p><%= obj.time %></p>
-                                            <p><%= obj.address %></p>
-                                            <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
-                                        </div>
-                                    </article> 
-                               <% }
-                            }) %>
-                        </div>
-                        <div>
-                            <h2>Crafts</h2>
-                            <% list.forEach(function(obj){
-                                if(obj.topic === 'crafts') { %>
-                                    <article id='events-${obj.topic}'>
-                                        <div>
-                                            <h3><a href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
-                                            <h3><%= obj.eventDescription %></h3>
-                                            <p><%= new Date(obj.date).toDateString() %></p>
-                                            <p><%= obj.time %></p>
-                                            <p><%= obj.address %></p>
-                                            <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
-                                        </div>
-                                    </article> 
-                               <% }
-                            }) %>
-                        </div>
-                        <% } %>
+                <article id='events-${obj.topic}'>
+                    <div class='mb-5'>
+                        <h3><a class='btn btn-success' href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
+                        <h6><%= obj.eventDescription %></h3>
+                        <p><%= new Date(obj.date).toDateString() %></p>
+                        <p><%= obj.time %></p>
+                        <p><%= obj.address %></p>
+                        <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
                     </div>
-                    <div class='container__content_2'></div>
-                    <div class='container__content_3'></div>
-                </div>
+                </article>
+                <% }
+                            }) %>
             </div>
-        </section>
+            <div class='col-md-3 justify-content-center'>
+                <h1 class='mb-5' >Food</h2>
+                <% list.forEach(function(obj){
+                                if(obj.topic === 'food') { %>
+                <article id='events-${obj.topic}'>
+                     <div class='mb-5'>
+                        <h3><a class='btn btn-success' href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
+                        <h6><%= obj.eventDescription %></h3>
+                        <p><%= new Date(obj.date).toDateString() %></p>
+                        <p><%= obj.time %></p>
+                        <p><%= obj.address %></p>
+                        <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
+                    </div>
+                </article>
+                <% }
+                            }) %>
+            </div>
+            <div class='col-md-3'>
+                <h1 class='mb-5'>Drink</h2>
+                <% list.forEach(function(obj){
+                                if(obj.topic === 'drink') { %>
+                <article id='events-${obj.topic}'>
+                    <div class='mb-5'>
+                        <h3><a class='btn btn-success' href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
+                        <h6><%= obj.eventDescription %></h3>
+                        <p><%= new Date(obj.date).toDateString() %></p>
+                        <p><%= obj.time %></p>
+                        <p><%= obj.address %></p>
+                        <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
+                    </div>
+                </article>
+                <% }
+                            }) %>
+            </div>
+            <div class='col-md-3'>
+                <h1 class='mb-5'>Crafts</h2>
+                <% list.forEach(function(obj){
+                                if(obj.topic === 'crafts') { %>
+                <article id='events-${obj.topic}'>
+                    <div class='mb-5'>
+                        <h3><a class='btn btn-success' href="/public/listingDetails/<%= obj._id %>"><%= obj.title %></a></h3>
+                        <h6><%= obj.eventDescription %></h3>
+                        <p><%= new Date(obj.date).toDateString() %></p>
+                        <p><%= obj.time %></p>
+                        <p><%= obj.address %></p>
+                        <img src='http://localhost:3000/public/images/<%= obj._id %>' height=200px width=200px>
+                    </div>
+                </article>
+                <% }
+                            }) %>
+            </div>
+            <% } %>
+        </div>
+    </div>
 
-        <%- include('./partials/footer.ejs') %>
-    </body>
+
+    <%- include('./partials/footer.ejs') %>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+</body>
+
 </html>

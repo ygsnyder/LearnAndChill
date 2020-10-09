@@ -1,48 +1,52 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset='UTF-8'>
-        <meta name="viewport" content="width=device-width, maximum-scale=1.0">
-        <title>Learn&Chill</title>
-        <link rel='stylesheet' type='text/css' href='/stylesheets/main/main.css'>
-        <link rel='stylesheet' type='text/css' href='/stylesheets/pages/_RSVPed.css'>
-        <script src='/stylesheets/scripts/styleScript.js' defer></script>
-    </head>
-    
-    <body>
-        <%- include('./partials/navigation.ejs') %>
 
-        <section class='container'>
-            <div class='container__content_1'>
-                        <section id='headers'>
-                            <h3>Event</h3>
-                            <h3>Date</h3>
-                            <h3>Status</h3>
-                            <h3></h3>
-                        </section>
-                        <% if (eventList){ %>
-                        
-                            <% for(let i = 0; i< eventList.length; i++){ %>
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+    <title>Learn&Chill</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type='text/css' href="/stylesheets/styles.css">
+    <script src='/stylesheets/scripts/styleScript.js' defer></script>
+</head>
 
+<body>
+    <%- include('./partials/navigation.ejs') %>
 
-                                <section>
-                                    <p><%= eventList[i].title %></p>
-                                    <p><%= new Date(eventList[i].date).toDateString() %></p>
-                                    <p><%= eventList[i].status %></p>
-                                    <div>
-                                        <a href="/auth/update/<%= eventList[i]._id %>">Update</a>
-                                        <a href="/auth/delete/<%= eventList[i]._id %>">Delete</a>
-                                    </div>
-                                </section>
+    <section class='container shortPage-80 pt-5'>
+        <div class='row mr-auto'>
+                <h4 class='col-md-3'>Event</h4>
+                <h4 class='col-md-3'>Date</h4>
+                <h4 class='col-md-3'>Status</h4>
+        </div>
+            <% if (eventList){ %>
 
-                          <%  } %>
-                        <% } %>
-                        
-            </div>
-            <div class='container__content_2'></div>
-            <div class='container__content_3'></div>
-        </section>
+            <% for(let i = 0; i< eventList.length; i++){ %>
+            <section class='row mt-4'>
+                <p class='col-md-3'><%= eventList[i].title %></p>
+                <p class='col-md-3'><%= new Date(eventList[i].date).toDateString() %></p>
+                <p class='col-md-3'><%= eventList[i].status %></p>
+                <div class='col-md-3'>
+                    <a class='btn btn-info' href="/auth/update/<%= eventList[i]._id %>">Change</a>
+                    <a class='btn btn-secondary' href="/auth/delete/<%= eventList[i]._id %>">Cancel RSVP</a>
+                </div>
+            </section>
 
-        <%- include('./partials/footer.ejs') %>
-    </body>
+            <%  } %>
+            <% } %>
+    </section>
+
+    <%- include('./partials/footer.ejs') %>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
+    </script>
+</body>
+
 </html>
